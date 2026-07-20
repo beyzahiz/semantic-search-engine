@@ -5,18 +5,19 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 # SentenceTransformer bir class
 # model bu classtan üretilmiş bir nesne
 
-sentence = "Kediler süt içer."
-embedding = model.encode(sentence)
-#print(embedding)
-
 sentences = [
     "Kediler süt içer.",
-    "Köpekler kemik yemeyi sever.",
-    "Python popüler bir programlama dilidir.",
-    "Yapay zeka sağlık alanında kullanılmaktadır.",
-    "Kanser tedavisinde immünoterapi umut veriyor."
+    "Yavru kediler süt içmeyi sever.",
+    "Python programlama dilidir.",
+    "Araba tamircisi lastiği değiştirdi."
 ]
 
 embeddings = model.encode(sentences)
 
+similarity = cosine_similarity(
+    [embeddings[0]],
+    [embeddings[1]]
+)
+
+print(similarity)
 
