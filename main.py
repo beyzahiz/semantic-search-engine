@@ -4,26 +4,34 @@ import faiss
 import numpy as np
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-# SentenceTransformer bir class
-# model bu classtan üretilmiş bir nesne
 
-sentences = [
-    "Kediler süt içer.",
-    "Yavru kediler süt içmeyi sever.",
-    "Python programlama dilidir.",
-    "Araba tamircisi lastiği değiştirdi."
+documents = [
+    "Kanser tedavisinde immünoterapi umut veriyor.",
+    "Python veri bilimi için çok kullanılır.",
+    "Kediler süt içmeyi sever.",
+    "Kalp hastalıkları erken teşhis ile önlenebilir.",
+    "Makine öğrenmesi sağlık alanında kullanılmaktadır."
 ]
 
-embeddings = model.encode(sentences)
+embeddings = model.encode(documents)
 
-similarity = cosine_similarity(
-    [embeddings[0]],
-    [embeddings[1]]
+embeddings = np.array(
+    embeddings,
+    dtype=np.float32
 )
 
 dimension = embeddings.shape[1]
 index = faiss.IndexFlatL2(dimension)
-index.add(
-    np.array(embeddings, dtype=np.float32)
+index.add(embeddings)
+
+query = "Kanser tedavisi"
+query_embedding = model.encode([query])
+query_embedding = np.array(
+    query_embedding,
+    dtype=np.float32
 )
 
+distances, indices = index.search(
+    query_embedding,
+    k=2
+)
