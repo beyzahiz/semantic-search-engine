@@ -5,13 +5,8 @@ import numpy as np
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-documents = [
-    "Kanser tedavisinde immünoterapi umut veriyor.",
-    "Python veri bilimi için çok kullanılır.",
-    "Kediler süt içmeyi sever.",
-    "Kalp hastalıkları erken teşhis ile önlenebilir.",
-    "Makine öğrenmesi sağlık alanında kullanılmaktadır."
-]
+with open("data/documents.txt", "r", encoding="utf-8") as f:
+    documents = f.read().splitlines()
 
 embeddings = model.encode(documents)
 
@@ -19,6 +14,8 @@ embeddings = np.array(
     embeddings,
     dtype=np.float32
 )
+
+np.save("embeddings.npy", embeddings)
 
 dimension = embeddings.shape[1]
 index = faiss.IndexFlatL2(dimension)
@@ -33,5 +30,8 @@ query_embedding = np.array(
 
 distances, indices = index.search(
     query_embedding,
-    k=2
+    k=2 #en benzer 2 dokümanı getir
 )
+
+for i in indices[0]:
+    print(documents[i])
