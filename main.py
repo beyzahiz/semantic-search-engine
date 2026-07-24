@@ -1,37 +1,31 @@
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-import faiss
-import numpy as np
+from sentence_transformers import SentenceTransformer, util
 
+# 1. Modeli Yükleme
+# Hugging Face üzerindeki hafif, hızlı ve oldukça başarılı bir embedding modeli.
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-with open("data/documents.txt", "r", encoding="utf-8") as f:
-    documents = f.read().splitlines()
+# 2. Veri Seti (Dokümanlarımız)
+documents = [
+    "Onkoloji alanında yeni immunoterapi yöntemleri geliştiriliyor.",
+    "Yapay zeka modelleri doğal dil işleme alanında devrim yarattı.",
+    "Kanser hastaları için yeni tedavi protokolleri onaylandı.",
+    "Fenerbahçe dün akşam oynanan futbol maçını 2-1 kazandı."
+]
 
-embeddings = model.encode(documents)
-
-embeddings = np.array(
-    embeddings,
-    dtype=np.float32
-)
-
-np.save("embeddings.npy", embeddings)
-
-dimension = embeddings.shape[1]
-index = faiss.IndexFlatL2(dimension)
-index.add(embeddings)
-
+# 3. Sorgu (Kullanıcının Arama Metni)
 query = "Kanser tedavisi"
-query_embedding = model.encode([query])
-query_embedding = np.array(
-    query_embedding,
-    dtype=np.float32
-)
 
-distances, indices = index.search(
-    query_embedding,
-    k=2 #en benzer 2 dokümanı getir
-)
+# 4. Metinleri Vektörlere (Embedding) Dönüştürme
+doc_embeddings = model.encode(documents, convert_to_tensor=True)
+query_embedding = model.encode(query, convert_to_tensor=True)
 
-for i in indices[0]:
-    print(documents[i])
+# 5. Kosinüs Benzerliği Hesaplama
+cosine_scores = util.cos_sim(query_embedding, doc_embeddings)
+
+# 6. Sonuçları Eşleştirme ve Yazdırma
+print(f"Sorgu: '{query}'\n" + "-"*40)
+
+for i, doc in enumerate(documents):
+    score = cosine_scores[0][i].item()
+    print(f"Doküman: {doc}")
+    print(f"Benzerlik Skoru: {score:.4f}\n")
