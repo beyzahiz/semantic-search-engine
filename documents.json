@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Onkoloji Makalesi",
+        "content": "Onkoloji alanında yeni immunoterapi yöntemleri ve akıllı molekül tedavileri geliştiriliyor.",
+        "category": "Tıp"
+    },
+    {
+        "id": 2,
+        "title": "Doğal Dil İşleme",
+        "content": "Büyük dil modelleri doğal dil işleme ve metin özetleme görevlerinde yüksek başarı gösteriyor.",
+        "category": "Yapay Zeka"
+    },
+    {
+        "id": 3,
+        "title": "Kanser Araştırmaları",
+        "content": "Kanser hastaları için yeni nesil tedavi protokolleri ve klinik testler onaylandı.",
+        "category": "Tıp"
+    },
+    {
+        "id": 4,
+        "title": "Spor Haberleri",
+        "content": "Fenerbahçe dün akşam oynanan kritik futbol maçını 2-1 kazanarak liderliğini sürdürdü.",
+        "category": "Spor"
+    }
+]

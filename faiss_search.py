@@ -32,7 +32,7 @@ faiss.normalize_L2(doc_embeddings)
 
 # 5. FAISS İndeksi Oluşturma
 dimension = doc_embeddings.shape[1]  # MiniLM için bu değer 384'tür
-index = faiss.IndexFlatIP(dimension) # Inner Product (Kosinüs Benzerliği için)
+index = faiss.IndexFlatIP(dimension) # boş bir FAISS İndeksi (Vektör Veritabanı Kutusu) oluşturur.
 
 # Vektörleri FAISS Indeksine Ekleme
 index.add(doc_embeddings)
