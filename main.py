@@ -10,8 +10,7 @@ print(" Semantic Search Engine Çalıştırılıyor\n")
 with open('documents.json', 'r', encoding='utf-8') as f:
     documents = json.load(f)
 
-# Testi 1000+ doküman seviyesine çıkarmak için veriyi simüle ederek çoğaltıyoruz
-# (Gerçek hayatta bu JSON içinde 1000 farklı veri olur)
+# Testi 1000+ doküman seviyesine çıkarmak için veriyi çoğaltma işlemi
 scaled_documents = (documents * 250)[:1000]
 print(f"Veri setinde toplam {len(scaled_documents)} adet makale mevcut.")
 
@@ -25,7 +24,7 @@ start_embed = time.time()
 doc_embeddings = model.encode(contents, convert_to_tensor=False)
 doc_embeddings = np.array(doc_embeddings).astype('float32')
 
-# Cosine Similarity hesaplamak için L2 Normalizasyonu yapıyoruz
+# Cosine Similarity hesaplamak için L2 Normalizasyonu 
 faiss.normalize_L2(doc_embeddings)
 
 # ADIM 4: FAISS Vektör İndeksini Kurma
@@ -38,12 +37,12 @@ print(f"FAISS İndeksine {index.ntotal} adet vektör yüklendi.\n")
 query = "Tümör ve kanser hastalarında uygulanan yeni tedavi yöntemleri"
 print(f" Arama Sorgusu: '{query}'")
 
-# Sorguyu da vektörleştirip normalize ediyoruz
+# Sorguyu vektörleştirip normalize etme işlemi
 query_embedding = model.encode([query], convert_to_tensor=False)
 query_embedding = np.array(query_embedding).astype('float32')
 faiss.normalize_L2(query_embedding)
 
-# En yakın 3 sonucu aratıyoruz (Top-3)
+# En yakın 3 sonucu aratma (Top-3)
 k = 3
 distances, indices = index.search(query_embedding, k)
 
